@@ -1,0 +1,24 @@
+﻿################################################################################
+# 此 .gitignore 文件已由 Microsoft(R) Visual Studio 自动创建。
+################################################################################
+
+/.vs
+/output
+/src/python/env
+/src/cs/TCWCE-cs-netcore/bin
+/src/cs/TCWCE-cs-netcore/obj
+/src/cs/TCWCE-cs-netcore-debug/bin
+/src/cs/TCWCE-cs-netcore-debug/obj
+/src/cs/TCWCE-cs-net/bin
+/src/cs/TCWCE-cs-net/obj
+/src/cs/TCWCE-cs-net-debug/bin
+/src/cs/TCWCE-cs-net-debug/obj
+/src/cs/TCWCE-cs-netframework/bin
+/src/cs/TCWCE-cs-netframework-debug/bin
+/src/cs/TCWCE-cs-netframework/obj
+/src/cs/TCWCE-cs-netframework-debug/obj
+/x64
+/Debug
+/src/cpp/Debug-cpp-windows/x64
+/src/cpp/TCWCE-cpp-windows/x64
+*.user
