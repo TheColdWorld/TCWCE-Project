@@ -20,7 +20,7 @@
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
     <NoWin32Manifest>true</NoWin32Manifest>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <AssemblyName>$(MSBuildProjectName)_$(OS)_$(Platform)_$(TargetFramework)</AssemblyName>
+    <AssemblyName>$(MSBuildProjectName)_$(OS)_$(Platform)_$(Framework)</AssemblyName>
     <AnalysisLevel>6.0</AnalysisLevel>
   </PropertyGroup>
 

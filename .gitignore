@@ -22,3 +22,4 @@
 /src/cpp/Debug-cpp-windows/x64
 /src/cpp/TCWCE-cpp-windows/x64
 *.user
+/src/cs/TCWCE-cs-net/Properties
