@@ -1,0 +1,11 @@
+{
+  "profiles": {
+    "Debug-CSharp-Core3.1": {
+      "commandName": "Project"
+    },
+    "WSL": {
+      "commandName": "WSL2",
+      "distributionName": ""
+    }
+  }
+}
