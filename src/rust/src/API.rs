@@ -18,3 +18,12 @@
     USA
 */
 //This is Application Public Interface
+ #[allow(non_snake_case)]
+pub trait Index<iterator,Return>{
+    #[must_use]
+    fn index(&mut self,INDEX:iterator) -> Return;
+    #[must_use]
+    fn GetIndex(&mut self,INDEX:iterator) -> Result<Return,String>;
+    unsafe fn GetIndexPointer(&mut self,INDEX:iterator) ->  *mut crate::Key::Key;
+    fn GetIndexRef(&mut self,INDEX:iterator) -> &crate::Key::Key;
+}

@@ -18,75 +18,68 @@
     USA
 */
 #[allow(non_snake_case)]
-pub struct SerializedString{
-    _value:String,
-    _From:String
+pub struct SerializedString {
+    _value: String,
+    _From: String,
 }
 #[allow(non_snake_case)]
-impl SerializedString{
+impl SerializedString {
     #[inline]
-    fn From_Str(value:&str,from:&str) -> Self{
-        Self{
-            _value:String::from(value),
-            _From:String::from(from)
+    fn From_Str(value: &str, from: &str) -> Self {
+        Self {
+            _value: String::from(value),
+            _From: String::from(from),
         }
     }
     #[inline]
-    fn From_String(ref value:String,from:&str) ->Self{
-        Self{
-            _value:value.clone(),
-            _From:String::from(from)
-        }
-    }
-    #[inline]
-    fn From_RefString(value:&String,from:&str) ->Self{
-        Self{
-            _value:String::from(value),
-            _From:String::from(from)
+    fn From_RefString(value: &String, from: &str) -> Self {
+        Self {
+            _value: String::from(value),
+            _From: String::from(from),
         }
     }
 }
-impl From<&str> for SerializedString{
+impl From<&str> for SerializedString {
     #[inline]
     fn from(value: &str) -> Self {
-        Self{
+        Self {
             _value: String::from(value),
-            _From:String::from("From")
+            _From: String::from("From"),
         }
     }
 }
-impl From<String> for  SerializedString{
+impl From<String> for SerializedString {
     #[inline]
     fn from(ref value: String) -> Self {
-        Self{
+        Self {
             _value: value.clone(),
-            _From:String::from("From")
+            _From: String::from("From"),
         }
     }
 }
-impl From<&String> for SerializedString{
+impl From<&String> for SerializedString {
     #[inline]
     fn from(value: &String) -> Self {
-        Self{
+        Self {
             _value: String::from(value),
-            _From:String::from("From")
+            _From: String::from("From"),
         }
     }
 }
 
-impl Into<String> for SerializedString{
+impl Into<String> for SerializedString {
     #[inline]
     fn into(self) -> String {
-        return  self._value.clone()
+        return self._value.clone();
     }
 }
 
-impl Clone for SerializedString{
+impl Clone for SerializedString {
     #[inline]
     fn clone(&self) -> Self {
-        Self{
-            _value:self._value.clone(),
-            _From:self._From.clone()
+        Self {
+            _value: self._value.clone(),
+            _From: self._From.clone(),
         }
     }
 }

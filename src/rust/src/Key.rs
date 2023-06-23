@@ -19,63 +19,81 @@
 */
 #[allow(non_snake_case)]
 #[derive(Clone)]
-pub struct Key{
-    _Value : crate::Value::Value,
-    _Name:std::string::String
+pub struct Key {
+    _Value: crate::Value::Value,
+    _Name: std::string::String,
 }
 #[allow(non_snake_case)]
 impl Key {
-    pub fn From_str(ref value:&str) ->Result<Self, String>{
-        let tmp:Vec<&str>=value.split('=').collect();
-        if tmp.len() == 0{
-            return Err(format!(r"Format Error: '{:?}' is not 'Name=Value' format",value));
+    pub fn From_str(ref value: &str) -> Result<Self, String> {
+        let tmp: Vec<&str> = value.split('=').collect();
+        if tmp.len() == 0 {
+            return Err(format!(
+                r"Format Error: '{:?}' is not 'Name=Value' format",
+                value
+            ));
+        } else {
+            return Ok(Self {
+                _Value: crate::Value::Value::From_String(tmp[1..].concat()),
+                _Name: String::from(tmp[0]),
+            });
         }
-        else {
-            return Ok(Self { _Value:crate::Value::Value::From_String(tmp[1..].concat()), _Name: String::from(tmp[0]) });
+    }
+    pub fn From_String(ref value: &String) -> Result<Self, String> {
+        let tmp: Vec<&str> = value.split('=').collect();
+        if tmp.len() == 0 {
+            return Err(format!(
+                r"Format Error: '{:?}' is not 'Name=Value' format",
+                value
+            ));
+        } else {
+            return Ok(Self {
+                _Value: crate::Value::Value::From_String(tmp[1..].concat()),
+                _Name: String::from(tmp[0]),
+            });
         }
-        
     }
-    pub fn From_String(ref value:&String)->Result<Self, String>{
-        let tmp:Vec<&str>=value.split('=').collect();
-        if tmp.len() == 0{
-            return Err(format!(r"Format Error: '{:?}' is not 'Name=Value' format",value));
-        }
-        else {
-            return Ok(Self { _Value:crate::Value::Value::From_String(tmp[1..].concat()), _Name: String::from(tmp[0]) });
-        }
-        
+    pub fn Equal(&self, others: Self) -> bool {
+        return self._Value.eq(others._Value) && self._Name.eq(&others._Name);
     }
-    pub  fn Equal(&self,others:Self)->bool{
-        return  self._Value.eq(others._Value) && self._Name.eq(&others._Name);
+    pub fn eq(&self, others: Self) -> bool {
+        return self._Value.eq(others._Value) && self._Name.eq(&others._Name);
     }
-    pub  fn eq(&self,others:Self)->bool{
-        return  self._Value.eq(others._Value) && self._Name.eq(&others._Name);
-    }
-    pub fn Name(&self) -> String{
+    pub fn Name(&self) -> String {
         return self._Name.clone();
     }
-    pub fn Value(&self) ->crate::Value::Value{
+    pub fn Value(&self) -> crate::Value::Value {
         return self._Value.clone();
     }
-    pub fn clone(&self)->Self{
-        Self{
-            _Name:self._Name.clone(),
-            _Value:self.Value().clone()
+    pub fn GetValueRef(&self) -> &crate::Value::Value {
+        return &self._Value;
+    }
+    pub unsafe fn GetValuePointer(&mut self) -> *mut crate::Value::Value {
+        return &mut self._Value as *mut crate::Value::Value;
+    }
+    pub fn ChangeName(&mut self, ref NewName: String) {
+        self._Name = NewName.clone();
+    }
+    pub fn ChangeValue(&mut self, ref NewValue: crate::Value::Value) {
+        self._Value = NewValue.clone();
+    }
+    pub fn SerializedString(&self) -> crate::SerializedString::SerializedString {
+        crate::SerializedString::SerializedString::from(self.Name() + "+" + self.Value().To_Str())
+    }
+    pub fn clone(&self) -> Self {
+        Self {
+            _Name: self._Name.clone(),
+            _Value: self.Value().clone(),
         }
     }
 }
 impl From<&str> for Key {
     fn from(ref value: &str) -> Self {
-         Self::From_str(value).unwrap()
+        Self::From_str(value).unwrap()
     }
 }
 impl From<String> for Key {
     fn from(ref value: String) -> Self {
-         Self::From_String(&value).unwrap()
-    }
-}
-impl From<&String> for Key {
-    fn from(ref value: &String) -> Self {
-        Self::From_String(value).unwrap()
+        Self::From_String(&value).unwrap()
     }
 }
