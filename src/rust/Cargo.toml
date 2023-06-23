@@ -1,0 +1,12 @@
+[package]
+name = "TheColdWorldConfigEditer"
+version = "2.0.0"
+authors = ["Dream_Sunny <3264524796@qq.com>"]
+edition = "2021"
+
+[lib]
+name="TheColdWorldConfigEditer"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
