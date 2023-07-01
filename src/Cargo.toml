@@ -1,0 +1,19 @@
+[package]
+name = "TheColdWorldConfigEditer"
+version = "2.0.0"
+authors = ["Dream_Sunny <3264524796@qq.com>"]
+edition = "2021"
+repository = "https://github.com/TheColdWorld/TCWCE-Project"
+license="LGPL-2.1-only"
+keywords = ["config"]
+readme = "/README.md"
+publish = ["Github-Releases","crates.io"]
+
+[lib]
+name="TheColdWorldConfigEditer"
+#crate-type = ["dylib"]
+#crate-type = ["rlib"]
+#crate-type = ["cdylib"]
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]

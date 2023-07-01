@@ -1,21 +1,3 @@
-﻿################################################################################
-# 此 .gitignore 文件已由 Microsoft(R) Visual Studio 自动创建。
-################################################################################
+﻿
+/src/target
 
-/.vs
-/output
-/src/python/env
-/src/cs/Debug-CSharp-6.0/bin
-/src/cs/Debug-CSharp-6.0/obj
-/src/cs/Debug-CSharp-7.0/bin
-/src/cs/Debug-CSharp-7.0/obj
-/src/cs/Debug-CSharp-Core3.1/bin
-/src/cs/Debug-CSharp-Core3.1/obj
-/src/cs/TCWCE-Project-cs/bin
-/src/cs/TCWCE-Project-cs/obj
-/x64
-/Debug
-/src/cpp/Debug-cpp-windows/x64
-/src/cpp/TCWCE-cpp-windows/x64
-*.user
-/src/cs/TCWCE-cs-net/Properties
