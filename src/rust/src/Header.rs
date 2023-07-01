@@ -18,7 +18,6 @@
     USA
 */
 #[allow(non_snake_case)]
-#[derive(Clone)]
 pub struct Header {
     _Keys: Vec<crate::Key::Key>,
     _Name: std::string::String,
@@ -230,6 +229,7 @@ impl Header {
     }
     pub fn Name(&self) ->String{ self._Name.clone()}
     pub fn ChangeName(&mut self,NewName:String) {self._Name=NewName.clone()}
+    pub fn Length(&self)->usize{self._Keys.len()}
 }
 
 impl From<&str> for Header {
@@ -306,5 +306,41 @@ impl crate::API::Index<&str,crate::Key::Key> for Header{
             if index.Name().eq(INDEX) { return &mut index.clone() as *mut crate::Key::Key; };
         };
         panic!("Item Not Found!");
+    }
+}
+
+impl Clone for Header {
+    fn clone(&self) -> Self {
+        Self{
+            _Keys:self._Keys.clone(),
+            _Name:self._Name.clone()
+        }
+    }
+}
+
+impl crate::API::Index<usize,crate::Key::Key> for Header{
+    fn GetIndex(&mut self, INDEX: usize) -> Result<crate::Key::Key, String> {
+        if INDEX >= self.Length() || INDEX < 0{
+            return Err("Out of Index".to_string())
+        };
+        return Ok(self._Keys[INDEX].clone());
+    }
+    fn GetIndexRef(&mut self, INDEX: usize) -> &crate::Key::Key {
+        if INDEX >= self.Length() {
+            panic!("Out of Index");
+        };
+        return &self._Keys[INDEX];
+    }
+    fn index(&mut self, INDEX: usize) -> crate::Key::Key {
+        if INDEX >= self.Length() {
+            panic!("Out of Index");
+        };
+        return self._Keys[INDEX].clone();
+    }
+    unsafe fn GetIndexPointer(&mut self, INDEX: usize) -> *mut crate::Key::Key {
+        if INDEX <= self.Length() {
+            panic!("Out of Index");
+        };
+        return &mut self._Keys[INDEX] as *mut crate::Key::Key;
     }
 }
