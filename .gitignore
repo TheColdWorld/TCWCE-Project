@@ -15,8 +15,7 @@
 /src/cs/TCWCE-Project-cs/obj
 /x64
 /Debug
-/src/cpp/Debug-cpp-windows/x64
-/src/cpp/TCWCE-cpp-windows/x64
+/src/cpp/Output
 *.user
 /src/cs/TCWCE-cs-net/Properties
 /src/rust/target
