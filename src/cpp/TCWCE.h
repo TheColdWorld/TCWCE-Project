@@ -23,10 +23,22 @@
 //    | |  | | |||  /_ |  \__| \_/|| |_/\| |_/|| |/\||| \_/||    /| |_/\| |_/||  \__| \_/|| | \||| |   | || |_//|  /_ | |_/|| |  | |  |  /_ |    /
 //    \_/  \_/ \|\____\\____/\____/\____/\____/\_/  \|\____/\_/\_\\____/\____/\____/\____/\_/  \|\_/   \_/\____\\____\\____/\_/  \_/  \____\\_/\_\
 //  
+//Version 2.0.0
 #include <string>
 #include "./lib/Linked-List-Cpp.h"
 #pragma region Advance//Advance : Enable function [Use Define]
 //#define TCWCE_Use_C_exception
+#define TCWCE_Enable_IO
+#define TCWCE_Enable_Value_To_Number
+#define  TCWCE_Enable_Value_To_Bool
+#define TCWCE_Enable_Edit_Data
+
+#ifdef TCWCE_Enable_Value_To_Number
+#include <sstream> 
+#endif
+#ifdef TCWCE_Enable_Value_To_Bool
+#include <algorithm>
+#endif
 #pragma endregion Advance
 namespace std
 {
@@ -88,6 +100,60 @@ namespace TCWCE
             Value():_Value(new std::string){}
             Value(const std::string& value) : _Value(new std::string(value)){}
             std::string to_string() const {return *_Value;}
+            #ifdef TCWCE_Enable_Edit_Data
+            std::string* ValuePtr() 
+            {
+                return _Value;
+            }
+            std::string& ValueRef() 
+            {
+                return *_Value;
+            }
+            #endif
+            #ifdef TCWCE_Enable_Value_To_Bool
+            bool to_bool() const
+            {
+                std::string tmp;
+                std::transform(_Value->begin(),_Value->end(),tmp.begin(),::tolower);
+                if(tmp == "true") return true;
+                else if (tmp == "false") return false;
+                else Exception::ThrowError("Value is not \'true\' or \'false\'!");
+            }
+            #endif
+            #ifdef TCWCE_Enable_Value_To_Number
+            long long int to_long_long_int() const
+            {
+                long long int returns;
+                std::stringstream* stream = new std::stringstream();
+                stream->operator<<(_Value->c_str());
+                stream->operator>>(returns);
+                return returns;
+            }
+            int to_int() const
+            {
+                int returns;
+                std::stringstream* stream = new std::stringstream();
+                stream->operator<<(_Value->c_str());
+                stream->operator>>(returns);
+                return returns;
+            }
+            float to_float() const
+            {
+                float returns;
+                std::stringstream* stream = new std::stringstream();
+                stream->operator<<(_Value->c_str());
+                stream->operator>>(returns);
+                return returns;
+            }
+            double to_double() const
+            {
+                double returns;
+                std::stringstream* stream = new std::stringstream();
+                stream->operator<<(_Value->c_str());
+                stream->operator>>(returns);
+                return returns;
+            }
+            #endif
             private:
             std::string* _Value;
         };
@@ -136,6 +202,14 @@ namespace TCWCE
                     _Name=nullptr;
                 }
             }
+            Value value() const {return Value(*_Value);}
+            std::string name() const {return std::string(*_Name);}
+            #ifdef TCWCE_Enable_Edit_Data
+            Value& valueref()  {return *_Value;}
+            std::string& nameref()  {return *_Name;}
+            Value* valueptr()  {return _Value;}
+            std::string* nameptr()  {return _Name;}
+            #endif
             std::string Serializedstring() const  {return *_Name + "=" + _Value->to_string();}
             private:
             Value* _Value;
@@ -177,8 +251,7 @@ namespace TCWCE
                 {
                     throw e2;
                 }
-                #endif
-                
+                #endif  
             }
             std::string Serializedstring() const 
             { 
@@ -204,6 +277,8 @@ namespace TCWCE
                     _KeyList=nullptr;
                 }
             }
+            std::string name() const {return std::string(*_Name);}
+            
             private:
             LinkList<Key,unsigned long long int>* _KeyList;
             std::string* _Name;
