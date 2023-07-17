@@ -1,0 +1,41 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net6.0;net7.0</TargetFrameworks>
+    <RootNamespace>TCWCE</RootNamespace>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AssemblyName>TCWCE-CSharp</AssemblyName>
+    <PackageId>TheColdWorldConfigEditer</PackageId>
+	  <LangVersion>11</LangVersion>
+    <Title>TCWCE</Title>
+    <Version>2.1.0</Version>
+    <Authors>DreamSunny</Authors>
+    <Company>None</Company>
+    <Product>None</Product>
+    <Description>A solution that stores settings in a file</Description>
+    <Copyright>Copyright (©) 2022-2023  TheColdWorld(梦晴)</Copyright>
+    <RepositoryUrl>https://github.com/TheColdWorld/TCWCE-Project</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageOutputPath>..\..\..\output\Nuget</PackageOutputPath>
+    <AssemblyVersion>2.1.0.1</AssemblyVersion>
+    <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0|AnyCPU'">
+    <DebugType>embedded</DebugType>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net7.0|AnyCPU'">
+    <DebugType>embedded</DebugType>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0|AnyCPU'">
+    <DebugType>embedded</DebugType>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net7.0|AnyCPU'">
+    <DebugType>embedded</DebugType>
+  </PropertyGroup>
+
+</Project>
