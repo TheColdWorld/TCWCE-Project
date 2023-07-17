@@ -4,18 +4,11 @@
 
 /.vs
 /output
-/src/python/env
-/src/cs/Debug-CSharp-6.0/bin
-/src/cs/Debug-CSharp-6.0/obj
-/src/cs/Debug-CSharp-7.0/bin
-/src/cs/Debug-CSharp-7.0/obj
-/src/cs/Debug-CSharp-Core3.1/bin
-/src/cs/Debug-CSharp-Core3.1/obj
-/src/cs/TCWCE-Project-cs/bin
-/src/cs/TCWCE-Project-cs/obj
-/x64
-/Debug
-/src/cpp/Debug-cpp-windows/x64
-/src/cpp/TCWCE-cpp-windows/x64
+/src/cs/TCWCE-CSharp/bin
+/src/cs/TCWCE-CSharp/obj
+/src/cs/Debug/bin
+/src/cs/Debug/obj
+/src/cpp/Output
 *.user
-/src/cs/TCWCE-cs-net/Properties
+/src/rust/target
+/src/rust/.idea
