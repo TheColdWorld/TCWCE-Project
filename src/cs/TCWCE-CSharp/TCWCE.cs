@@ -30,7 +30,7 @@
     {
         public const string Name = "TheColdConfigEditer";
         public const string Auther = "TheColdWorld";
-        public const string Version = "2.1.0.2";
+        public const string Version = "2.1.0.3";
     }
     namespace For_String
     {

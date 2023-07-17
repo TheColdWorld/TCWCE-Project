@@ -18,9 +18,10 @@
     <RepositoryUrl>https://github.com/TheColdWorld/TCWCE-Project</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageOutputPath>..\..\..\output\Nuget</PackageOutputPath>
-    <AssemblyVersion>2.1.0.2</AssemblyVersion>
+    <AssemblyVersion>2.1.0.3</AssemblyVersion>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
-    <FileVersion>2.1.0.1</FileVersion>
+    <FileVersion>2.1.0.3</FileVersion>
+    <PackageLicenseExpression>LGPL-2.1-only</PackageLicenseExpression>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0|AnyCPU'">
