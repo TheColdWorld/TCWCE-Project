@@ -30,7 +30,7 @@
     {
         public const string Name = "TheColdConfigEditer";
         public const string Auther = "TheColdWorld";
-        public const string Version = "2.1.0.1";
+        public const string Version = "2.1.0.2";
     }
     namespace For_String
     {
@@ -64,6 +64,15 @@
             {
                 get => this is null ? throw new System.NullReferenceException() : _Array.GetRange(range.Start.Value, range.End.Value); 
                 set { if (this is null) throw new System.NullReferenceException(); int start = range.Start.GetOffset(_Array.Count);int count = range.End.GetOffset(_Array.Count) - start; _Array.RemoveRange(start, count);_Array.InsertRange(start, value);}
+            }
+            public Header this[string Name]
+            {
+                get
+                {
+                    int index = -1;
+                    for (int i = 0; i < _Array.Count; i++) if (_Array[i].Name == Name) {index = i; break; }
+                    return index == -1 ? throw new System.ArgumentException("Item not found",nameof(Name)) : _Array[index];
+                }
             }
             public string SerializedString
             {
@@ -100,7 +109,7 @@
                         {
                             if (SerializedStringArray[i] == "}")
                             {
-                                Lines.Add(new() { i, index });//Store data
+                                Lines.Add(new() { index,i});//Store data
                                 index = i;//Jump index
                                 break;
                             }
@@ -110,15 +119,21 @@
                 _Array = new(Lines.Count);//Create object
                 foreach (var index in Lines)
                 {
-                    _Array.Add(new Header(SerializedStringArray[index[0]..index[1]]));//Copy the serialized data
+                    _Array.Add(new Header(SerializedStringArray[index[0]..(index[1]+1)]));//Copy the serialized data
                 }
             }
             public void Add(Header header) => _Array.Add(header);
+            public Header FindLastof(string Name)
+            {
+                int index = -1;
+                for (int i = 0; i < _Array.Count; i++) if (_Array[i].Name == Name) { index = i; break; }
+                return index == -1 ? throw new System.ArgumentException("Item not found", nameof(Name)) : _Array[index];
+            }
             public override bool Equals(object? obj) => base.Equals(obj);
             public override int GetHashCode() => base.GetHashCode();
             //operator
-            public static bool operator==(Headers left, Headers right) => left._Array == right._Array;
-            public static bool operator!=(Headers left, Headers right) => left._Array != right._Array;
+            public static bool operator ==(Headers left, Headers right) => left.SerializedString == right.SerializedString;
+            public static bool operator!=(Headers left, Headers right) => left.SerializedString != right.SerializedString;
             public static Headers operator +(Headers left, Headers right)
             {
                 System.Collections.Generic.List<Header> i = left._Array;
@@ -131,6 +146,12 @@
                 foreach (var item in right._Array) i.Remove(item);
                 return new(i);
             }
+            public static Headers operator +(Headers left, Header right)
+            {
+                left.Add(right);
+                return left;
+            }
+            
         }
         public class Header :System.Collections.IEnumerable,IIO_allowed
         {
@@ -164,6 +185,15 @@
             {
                 get => this is null ? throw new System.NullReferenceException() : _Array.GetRange(range.Start.Value, range.End.Value);
                 set { if (this is null) throw new System.NullReferenceException(); int start = range.Start.GetOffset(_Array.Count); int count = range.End.GetOffset(_Array.Count) - start; _Array.RemoveRange(start, count); _Array.InsertRange(start, value); }
+            }
+            public Key this[string Name]
+            {
+                get
+                {
+                    int index = -1;
+                    for (int i = 0; i < _Array.Count; i++) if (_Array[i].Name == Name) { index = i; break; }
+                    return index == -1 ? throw new System.ArgumentException("Item not found", nameof(Name)) : _Array[index];
+                }
             }
             public string SerializedString
             {
@@ -205,11 +235,17 @@
                 for (int i = 2; i < SerializedStringArray.Length-1; i++) _Array.Add(new(SerializedStringArray[i]));
             }
             public void Add(Key key) => _Array.Add(key);
+            public Key FindLastof(string Name)
+            {
+                int index = -1;
+                for (int i = 0; i < _Array.Count; i++) if (_Array[i].Name == Name) { index = i; break; }
+                return index == -1 ? throw new System.ArgumentException("Item not found", nameof(Name)) : _Array[index];
+            }
             public override bool Equals(object? obj) => base.Equals(obj);
             public override int GetHashCode() => base.GetHashCode();
             //operator
-            public static bool operator ==(Header a, Header b) => a.Name == b.Name && a._Array == b._Array;
-            public static bool operator !=(Header a, Header b) => a.Name != b.Name && a._Array != b._Array;
+            public static bool operator ==(Header a, Header b) => a.SerializedString == b.SerializedString;
+            public static bool operator !=(Header a, Header b) => a.SerializedString != b.SerializedString;
             public static bool operator ==(Header a,string b) => a.Name == b;
             public static bool operator !=(Header a,string b) => a.Name!=b;
         }
@@ -234,7 +270,9 @@
                 };
             }
             //accessor
-            public string SerializedString => _Name+_Value.ToString();
+            public string SerializedString => _Name+"="+_Value.ToString();
+            public Value Value => _Value;
+            public string Name => _Name;
         }
         public class Value
         {
