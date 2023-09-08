@@ -23,83 +23,55 @@
 //    | |  | | |||  /_ |  \__| \_/|| |_/\| |_/|| |/\||| \_/||    /| |_/\| |_/||  \__| \_/|| | \||| |   | || |_//|  /_ | |_/|| |  | |  |  /_ |    /
 //    \_/  \_/ \|\____\\____/\____/\____/\____/\_/  \|\____/\_/\_\\____/\____/\____/\____/\_/  \|\_/   \_/\____\\____\\____/\_/  \_/  \____\\_/\_\
 //
-    using System.Linq;
-    namespace TCWCE
-    {
+using System.Linq;
+namespace TCWCE
+{
     public static class LibraryInfo
     {
         public const string Name = "TheColdConfigEditer";
         public const string Auther = "TheColdWorld";
-        public const string Version = "2.1.0.3";
+        public const string Version = "2.1.1.1";
     }
     namespace For_String
     {
-        public class Headers : System.Collections.IEnumerable, IIO_allowed
+        public class Headers : IList<Header>, System.Collections.Generic.IList<Header>
         {
-            #region interface : System.Collections.IEnumerable
-            System.Collections.Generic.IEnumerator<Header> GetEnumerator()
-            {
-                foreach (var header in _Array)
-                {
-                    yield return header;
-                }
-            }
-            System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() =>GetEnumerator();
-            #endregion
             //var
-            private System.Collections.Generic.List<Header> _Array;
             //accessor
-            public int Count => _Array.Count;
             public Header this[int index]
             {
-                get => this is null ? throw new System.NullReferenceException() : _Array[index];
-                set { if (this is null) throw new System.NullReferenceException(); _Array[index] = value; }
+                get => this is null ? throw new System.NullReferenceException() : ((System.Collections.Generic.List<Header>)_List)[index];
+                set { if (this is null) throw new System.NullReferenceException(); ((System.Collections.Generic.List<Header>)_List)[index] = value; }
             }
             public Header this[System.Index index]
             {
-                get => this is null ? throw new System.NullReferenceException() : _Array[index];
-                set { if (this is null) throw new System.NullReferenceException(); _Array[index] = value; }
+                get => this is null ? throw new System.NullReferenceException() : ((System.Collections.Generic.List<Header>)_List)[index];
+                set { if (this is null) throw new System.NullReferenceException(); ((System.Collections.Generic.List<Header>)_List)[index] = value; }
             }
             public System.Collections.Generic.List<Header> this[System.Range range]
             {
-                get => this is null ? throw new System.NullReferenceException() : _Array.GetRange(range.Start.Value, range.End.Value); 
-                set { if (this is null) throw new System.NullReferenceException(); int start = range.Start.GetOffset(_Array.Count);int count = range.End.GetOffset(_Array.Count) - start; _Array.RemoveRange(start, count);_Array.InsertRange(start, value);}
+                get => this is null ? throw new System.NullReferenceException() : ((System.Collections.Generic.List<Header>)_List).GetRange(range.Start.Value, range.End.Value);
+                set { if (this is null) throw new System.NullReferenceException(); int start = range.Start.GetOffset(_List.Count); int count = range.End.GetOffset(_List.Count) - start; ((System.Collections.Generic.List<Header>)_List).RemoveRange(start, count); ((System.Collections.Generic.List<Header>)_List).InsertRange(start, value); }
             }
             public Header this[string Name]
             {
                 get
                 {
                     int index = -1;
-                    for (int i = 0; i < _Array.Count; i++) if (_Array[i].Name == Name) {index = i; break; }
-                    return index == -1 ? throw new System.ArgumentException("Item not found",nameof(Name)) : _Array[index];
-                }
-            }
-            public string SerializedString
-            {
-                get
-                {
-                    string tmp=string.Empty;
-                    foreach(Header header in _Array) tmp +=header.SerializedString+"\n";
-                    return tmp;
-                }
-            }
-            public string[] SerializedStringArray
-            {
-                get
-                {
-                    System.Collections.Generic.LinkedList<string> tmp = new();
-                    foreach(Header item in _Array) tmp.AddLast(item.SerializedString);
-                    return tmp.ToArray();
+                    for (int i = 0; i < _List.Count; i++) if (((System.Collections.Generic.List<Header>)_List)[i].Name == Name) { index = i; break; }
+                    return index == -1 ? throw new System.ArgumentException("Item not found", nameof(Name)) : ((System.Collections.Generic.List<Header>)_List)[index];
                 }
             }
             //functions
-            public Headers() => _Array = new();
-            public Headers(Headers others) => _Array = others._Array;
-            public Headers(System.Collections.Generic.IEnumerable<Header> others) => _Array = others.ToList();//using System.Linq;
-            public Headers(string serializedstring,string Separator ="\n",System.StringSplitOptions splitOptions = System.StringSplitOptions.TrimEntries):this(serializedstring.Split(new string[] { Separator }, splitOptions)){}
+            public Headers() => _List = new System.Collections.Generic.List<Header>();
+            public Headers(Headers others) => _List = new System.Collections.Generic.List<Header>(others._List);
+            public Headers(System.Collections.Generic.IEnumerable<Header> others) => _List = others.ToList();//using System.Linq;
+            public Headers(System.Collections.Generic.ICollection<Header> others) => _List = others.ToList();//using System.Linq;
+            public Headers(System.Collections.Generic.IList<Header> others) => _List = others.ToList();//using System.Linq;
+            public Headers(string serializedstring, string Separator = "\n", System.StringSplitOptions splitOptions = System.StringSplitOptions.TrimEntries) : this(serializedstring.Split(new string[] { Separator }, splitOptions)) { }
             public Headers(System.Collections.Generic.IEnumerable<string> _serializedstringArray)
             {
-                string[] SerializedStringArray =_serializedstringArray.ToArray();//Convert System.Collections.Generic.IEnumerable<string> to string[]
+                string[] SerializedStringArray = _serializedstringArray.ToArray();//Convert System.Collections.Generic.IEnumerable<string> to string[]
                 System.Collections.Generic.List<System.Collections.Generic.List<int>> Lines = new(); //Create a two-dimensional list to store the first and last data
                 for (int index = 0; index < SerializedStringArray.Length; index++)
                 {
@@ -109,41 +81,44 @@
                         {
                             if (SerializedStringArray[i] == "}")
                             {
-                                Lines.Add(new() { index,i});//Store data
+                                Lines.Add(new() { index, i });//Store data
                                 index = i;//Jump index
                                 break;
                             }
                         }
                     }
                 }
-                _Array = new(Lines.Count);//Create object
+                _List = new System.Collections.Generic.List<Header>(Lines.Count);//Create object
                 foreach (var index in Lines)
                 {
-                    _Array.Add(new Header(SerializedStringArray[index[0]..(index[1]+1)]));//Copy the serialized data
+                    _List.Add(new Header(SerializedStringArray[index[0]..(index[1] + 1)]));//Copy the serialized data
                 }
             }
-            public void Add(Header header) => _Array.Add(header);
             public Header FindLastof(string Name)
             {
                 int index = -1;
-                for (int i = 0; i < _Array.Count; i++) if (_Array[i].Name == Name) { index = i; break; }
-                return index == -1 ? throw new System.ArgumentException("Item not found", nameof(Name)) : _Array[index];
+                for (int i = 0; i < _List.Count; i++) if (((System.Collections.Generic.List<Header>)_List)[i].Name == Name) { index = i; break; }
+                return index == -1 ? throw new System.ArgumentException("Item not found", nameof(Name)) : ((System.Collections.Generic.List<Header>)_List)[index];
             }
             public override bool Equals(object? obj) => base.Equals(obj);
             public override int GetHashCode() => base.GetHashCode();
+            public int IndexOf(Header item) => ((System.Collections.Generic.List<Header>)_List).IndexOf(item);
+            public void Insert(int index, Header item) => ((System.Collections.Generic.List<Header>)_List).Insert(index, item);
+            public void RemoveAt(int index) => ((System.Collections.Generic.List<Header>)_List).RemoveAt(index);
+
             //operator
             public static bool operator ==(Headers left, Headers right) => left.SerializedString == right.SerializedString;
-            public static bool operator!=(Headers left, Headers right) => left.SerializedString != right.SerializedString;
+            public static bool operator !=(Headers left, Headers right) => left.SerializedString != right.SerializedString;
             public static Headers operator +(Headers left, Headers right)
             {
-                System.Collections.Generic.List<Header> i = left._Array;
-                i.InsertRange(left.Count,right._Array);
+                System.Collections.Generic.List<Header> i = (System.Collections.Generic.List<Header>)left._List;
+                i.InsertRange(left.Count, right._List);
                 return new(i);
             }
-            public static Headers operator -(Headers left, Headers right) 
+            public static Headers operator -(Headers left, Headers right)
             {
-                System.Collections.Generic.List<Header> i = left._Array;
-                foreach (var item in right._Array) i.Remove(item);
+                System.Collections.Generic.List<Header> i = (System.Collections.Generic.List<Header>)left._List;
+                foreach (var item in right._List) i.Remove(item);
                 return new(i);
             }
             public static Headers operator +(Headers left, Header right)
@@ -151,77 +126,41 @@
                 left.Add(right);
                 return left;
             }
-            
+
         }
-        public class Header :System.Collections.IEnumerable,IIO_allowed
+        public class Header : IList<Key>, System.Collections.Generic.IList<Key>
         {
-            #region interface : System.Collections.IEnumerable
-            System.Collections.Generic.IEnumerator<Key> GetEnumerator()
-            {
-                foreach (var header in _Array)
-                {
-                    yield return header;
-                }
-            }
-            System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => GetEnumerator();
-            #endregion
             //var
-            private System.Collections.Generic.List<Key> _Array;
             private string _Name;
             //accessor
             public string Name => _Name;
-            public int Count => _Array.Count;
             public Key this[int index]
             {
-                get => this is null ? throw new System.NullReferenceException() : _Array[index];
-                set { if (this is null) throw new System.NullReferenceException(); _Array[index] = value; }
+                get => this is null ? throw new System.NullReferenceException() : ((System.Collections.Generic.IList<Key>)_List)[index];
+                set { if (this is null) throw new System.NullReferenceException(); ((System.Collections.Generic.IList<Key>)_List)[index] = value; }
             }
             public Key this[System.Index index]
             {
-                get => this is null ? throw new System.NullReferenceException() : _Array[index];
-                set { if (this is null) throw new System.NullReferenceException(); _Array[index] = value; }
+                get => this is null ? throw new System.NullReferenceException() : ((System.Collections.Generic.IList<Key>)_List)[index];
+                set { if (this is null) throw new System.NullReferenceException(); ((System.Collections.Generic.IList<Key>)_List)[index] = value; }
             }
             public System.Collections.Generic.List<Key> this[System.Range range]
             {
-                get => this is null ? throw new System.NullReferenceException() : _Array.GetRange(range.Start.Value, range.End.Value);
-                set { if (this is null) throw new System.NullReferenceException(); int start = range.Start.GetOffset(_Array.Count); int count = range.End.GetOffset(_Array.Count) - start; _Array.RemoveRange(start, count); _Array.InsertRange(start, value); }
+                get => this is null ? throw new System.NullReferenceException() : ((System.Collections.Generic.List<Key>)_List).GetRange(range.Start.Value, range.End.Value);
+                set { if (this is null) throw new System.NullReferenceException(); int start = range.Start.GetOffset(_List.Count); int count = range.End.GetOffset(_List.Count) - start; ((System.Collections.Generic.List<Key>)_List).RemoveRange(start, count); ((System.Collections.Generic.List<Key>)_List).InsertRange(start, value); }
             }
             public Key this[string Name]
             {
                 get
                 {
                     int index = -1;
-                    for (int i = 0; i < _Array.Count; i++) if (_Array[i].Name == Name) { index = i; break; }
-                    return index == -1 ? throw new System.ArgumentException("Item not found", nameof(Name)) : _Array[index];
-                }
-            }
-            public string SerializedString
-            {
-                get
-                {
-                    string tmp = _Name + ":\n{\n";
-                    foreach (var item in _Array) tmp += item.SerializedString + "\n";
-                    tmp +="}";
-                    return tmp;
-                }
-            }
-            public string[] SerializedStringArray
-            {
-                get
-                {
-                    string[] tmp = new string[_Array.Count+3];
-                    tmp[0]= _Name+":"; tmp[1] = "{";
-                    for (int i = 0; i < _Array.Count; i++)
-                    {
-                        tmp[i+2]= _Array[i].SerializedString;
-                    }
-                    tmp[^1]= "}"; 
-                    return tmp;
+                    for (int i = 0; i < _List.Count; i++) if (((System.Collections.Generic.IList<Key>)_List)[i].Name == Name) { index = i; break; }
+                    return index == -1 ? throw new System.ArgumentException("Item not found", nameof(Name)) : ((System.Collections.Generic.IList<Key>)_List)[index];
                 }
             }
             //functions
-            public Header(Header others) { _Array = others._Array;_Name=others._Name; }
-            public Header(string name, System.Collections.Generic.IEnumerable<Key> keys) { _Array = keys.ToList();_Name = name; }
+            public Header(Header others) { _List = new System.Collections.Generic.List<Key>(others._List); _Name = new(others._Name); }
+            public Header(string name, System.Collections.Generic.IEnumerable<Key> keys) { _List = keys.ToList(); _Name = name; }
             public Header(string serializedstring, string Separator = "\n", System.StringSplitOptions splitOptions = System.StringSplitOptions.TrimEntries) : this(serializedstring.Split(new string[] { Separator }, splitOptions)) { }
             public Header(System.Collections.Generic.IEnumerable<string> serializedstringArray)
             {
@@ -230,36 +169,39 @@
                 if (SerializedStringArray[0][^1] != ':') { throw new System.FormatException(); }
                 if (SerializedStringArray[1] != "{") { throw new System.FormatException(); }
                 if (SerializedStringArray[^1] != "}") { throw new System.FormatException(); }
-                _Name = new(SerializedStringArray[0].Replace(":", string.Empty));//复制名字
-                _Array = new System.Collections.Generic.List<Key>(SerializedStringArray.Length - 3);
-                for (int i = 2; i < SerializedStringArray.Length-1; i++) _Array.Add(new(SerializedStringArray[i]));
+                _Name = new(SerializedStringArray[0].Replace(":", string.Empty));//clone name
+                _List = new System.Collections.Generic.List<Key>(SerializedStringArray.Length - 3);
+                for (int i = 2; i < SerializedStringArray.Length - 1; i++) _List.Add(new(SerializedStringArray[i]));
             }
-            public void Add(Key key) => _Array.Add(key);
             public Key FindLastof(string Name)
             {
                 int index = -1;
-                for (int i = 0; i < _Array.Count; i++) if (_Array[i].Name == Name) { index = i; break; }
-                return index == -1 ? throw new System.ArgumentException("Item not found", nameof(Name)) : _Array[index];
+                for (int i = 0; i < _List.Count; i++) if (((System.Collections.Generic.IList<Key>)_List)[i].Name == Name) { index = i; break; }
+                return index == -1 ? throw new System.ArgumentException("Item not found", nameof(Name)) : ((System.Collections.Generic.IList<Key>)_List)[index];
             }
             public override bool Equals(object? obj) => base.Equals(obj);
             public override int GetHashCode() => base.GetHashCode();
+            public int IndexOf(Key item) => ((System.Collections.Generic.IList<Key>)_List).IndexOf(item);
+            public void Insert(int index, Key item) => ((System.Collections.Generic.IList<Key>)_List).Insert(index, item);
+            public void RemoveAt(int index) => ((System.Collections.Generic.IList<Key>)_List).RemoveAt(index);
+
             //operator
             public static bool operator ==(Header a, Header b) => a.SerializedString == b.SerializedString;
             public static bool operator !=(Header a, Header b) => a.SerializedString != b.SerializedString;
-            public static bool operator ==(Header a,string b) => a.Name == b;
-            public static bool operator !=(Header a,string b) => a.Name!=b;
+            public static bool operator ==(Header a, string b) => a.Name == b;
+            public static bool operator !=(Header a, string b) => a.Name != b;
         }
-        public class Key
+        public class Key : ISerializeAble
         {
             //var   
             private string _Name;
             private Value _Value;
             //functions
             public Key(string name, Value value) { _Name = name; _Value = value; }
-            public Key(Key others) { _Name = others._Name; _Value=others._Value; }
+            public Key(Key others) { _Name = others._Name; _Value = others._Value; }
             public Key(string serializedstring)
             {
-                string[] tmp = serializedstring.Split('=',System.StringSplitOptions.RemoveEmptyEntries);
+                string[] tmp = serializedstring.Split('=', System.StringSplitOptions.RemoveEmptyEntries);
                 if (tmp.Length == 0) throw new System.FormatException();
                 _Name = tmp[0];
                 _Value = tmp.Length switch
@@ -270,7 +212,8 @@
                 };
             }
             //accessor
-            public string SerializedString => _Name+"="+_Value.ToString();
+            public string SerializedString => _Name + "=" + _Value.ToString();
+            public string[] SerializedStringArray => new string[1] { _Name + "=" + _Value.ToString() };
             public Value Value => _Value;
             public string Name => _Name;
         }
@@ -279,8 +222,8 @@
             //var   
             private string _value;
             //functions
-            public Value()=>_value=string.Empty;
-            public Value(string value)=> _value = value;
+            public Value() => _value = string.Empty;
+            public Value(string value) => _value = value;
             public Value(Value value) => _value = value._value;
             public override bool Equals(object? obj) => base.Equals(obj);
             public override int GetHashCode() => base.GetHashCode();
@@ -300,25 +243,49 @@
             public static bool operator ==(Value Left, Value Right) => Left._value == Right._value;
             public static bool operator !=(Value Left, Value Right) => Left._value != Right._value;
         }
-        public interface IIO_allowed
+
+        public abstract class IList<T> : System.Collections.Generic.IEnumerable<T>, System.Collections.Generic.ICollection<T>, ISerializeAble where T : ISerializeAble
         {
-            public string[] SerializedStringArray { get; }
+            public string[] SerializedStringArray
+            {
+                get
+                {
+                    System.Collections.Generic.LinkedList<string> tmp = new();
+                    foreach (T item in _List) tmp.AddLast(item.SerializedString);
+                    return tmp.ToArray();
+                }
+            }
+            public string SerializedString
+            {
+                get
+                {
+                    System.Text.StringBuilder tmp = new();
+                    foreach (T val in _List) tmp.AppendLine(val.SerializedString);
+                    return tmp.ToString();
+                }
+            }
+            protected internal System.Collections.Generic.ICollection<T> _List;
+            #region interface : System.Collections.Generic.IEnumerable , System.Collections.Generic.ICollection
+            public System.Collections.Generic.IEnumerator<T> GetEnumerator() => _List.GetEnumerator();
+            System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => (_List as System.Collections.IEnumerable).GetEnumerator();
+            public void Add(T item) => _List.Add(item);
+            public void Clear() => _List.Clear();
+            public bool Contains(T item) => _List.Contains(item);
+            public void CopyTo(T[] array, int arrayIndex) => _List.CopyTo(array, arrayIndex);
+            public bool Remove(T item) => _List.Remove(item);
+            public int Count => _List.Count;
+            public bool IsReadOnly => _List.IsReadOnly;
+            #endregion
+        }
+        public interface ISerializeAble
+        {
             public string SerializedString { get; }
+            public string[] SerializedStringArray { get; }
         }
     }
     public static class IO
     {
-        public static void OverriteToFile(For_String.IIO_allowed item,System.IO.FileInfo Fileinfo,System.Text.Encoding encoding)
-        {
-            if(item is null ) throw new System.ArgumentNullException(nameof(item));
-            if (Fileinfo is null) throw new System.ArgumentNullException(nameof(Fileinfo));
-            if (encoding is null) throw new System.ArgumentNullException(nameof(encoding));
-            if(Fileinfo.Exists) Fileinfo.Delete();
-            using System.IO.FileStream fs=Fileinfo.Create();
-            fs.Position=0;
-            fs.Write(encoding.GetBytes(item.SerializedString));
-        }
-        public static async System.Threading.Tasks.Task OverriteToFileAsync(For_String.IIO_allowed item, System.IO.FileInfo Fileinfo, System.Text.Encoding encoding, System.Action? Callback=default)
+        public static void OverriteToFile<T>(For_String.IList<T> item, System.IO.FileInfo Fileinfo, System.Text.Encoding encoding) where T : For_String.ISerializeAble
         {
             if (item is null) throw new System.ArgumentNullException(nameof(item));
             if (Fileinfo is null) throw new System.ArgumentNullException(nameof(Fileinfo));
@@ -326,10 +293,20 @@
             if (Fileinfo.Exists) Fileinfo.Delete();
             using System.IO.FileStream fs = Fileinfo.Create();
             fs.Position = 0;
-            await fs.WriteAsync(encoding.GetBytes(item.SerializedString));
+            fs.Write(encoding.GetBytes(item.SerializedString));
+        }
+        public static async System.Threading.Tasks.Task OverriteToFileAsync<T>(For_String.IList<T> item, System.IO.FileInfo Fileinfo, System.Text.Encoding encoding, System.Action? Callback = default, System.Threading.CancellationToken token = default) where T : For_String.ISerializeAble
+        {
+            if (item is null) throw new System.ArgumentNullException(nameof(item));
+            if (Fileinfo is null) throw new System.ArgumentNullException(nameof(Fileinfo));
+            if (encoding is null) throw new System.ArgumentNullException(nameof(encoding));
+            if (Fileinfo.Exists) Fileinfo.Delete();
+            using System.IO.FileStream fs = Fileinfo.Create();
+            fs.Position = 0;
+            await fs.WriteAsync(encoding.GetBytes(item.SerializedString), token);
             Callback?.Invoke();
         }
-        public static void OverriteToFile(For_String.IIO_allowed item, string Filepath, System.Text.Encoding encoding)
+        public static void OverriteToFile<T>(For_String.IList<T> item, string Filepath, System.Text.Encoding encoding) where T : For_String.ISerializeAble
         {
             if (item is null) throw new System.ArgumentNullException(nameof(item));
             if (Filepath is null) throw new System.ArgumentNullException(nameof(Filepath));
@@ -339,7 +316,7 @@
             fs.Position = 0;
             fs.Write(encoding.GetBytes(item.SerializedString));
         }
-        public static async System.Threading.Tasks.Task OverriteToFileAsync(For_String.IIO_allowed item, string Filepath, System.Text.Encoding encoding,System.Action? Callback=default)
+        public static async System.Threading.Tasks.Task OverriteToFileAsync<T>(For_String.IList<T> item, string Filepath, System.Text.Encoding encoding, System.Action? Callback = default, System.Threading.CancellationToken token = default) where T : For_String.ISerializeAble
         {
             if (item is null) throw new System.ArgumentNullException(nameof(item));
             if (Filepath is null) throw new System.ArgumentNullException(nameof(Filepath));
@@ -347,23 +324,23 @@
             if (System.IO.File.Exists(Filepath)) System.IO.File.Delete(Filepath);
             using System.IO.FileStream fs = System.IO.File.Create(Filepath);
             fs.Position = 0;
-            await fs.WriteAsync(encoding.GetBytes(item.SerializedString));
+            await fs.WriteAsync(encoding.GetBytes(item.SerializedString),token);
             Callback?.Invoke();
         }
-        public static For_String.Headers GetHeadersFromFile(string FilePath,System.Text.Encoding encoding)
+        public static For_String.Headers GetHeadersFromFile(string FilePath, System.Text.Encoding encoding)
         {
             return string.IsNullOrWhiteSpace(FilePath)
-                ? throw new System.ArgumentException("string is null or whitespace",nameof(FilePath))
+                ? throw new System.ArgumentException("string is null or whitespace", nameof(FilePath))
                 : encoding is null
                 ? throw new System.ArgumentNullException(nameof(encoding))
-                : new(System.IO.File.ReadAllLines(FilePath,encoding));
+                : new(System.IO.File.ReadAllLines(FilePath, encoding));
         }
-        public async static System.Threading.Tasks.Task<For_String.Headers> GetHeadersFromFileAsybc(string FilePath,System.Text.Encoding encoding ,System.Action? Callback =default)
+        public async static System.Threading.Tasks.Task<For_String.Headers> GetHeadersFromFileAsybc(string FilePath, System.Text.Encoding encoding, System.Action? Callback = default,System.Threading.CancellationToken token = default)
         {
             if (string.IsNullOrWhiteSpace(FilePath)) throw new System.ArgumentException("string is null or whitespace", nameof(FilePath));
             if (encoding is null) throw new System.ArgumentNullException(nameof(encoding));
-            string[] tmp = await System.IO.File.ReadAllLinesAsync(FilePath, encoding, default);
-            For_String.Headers returns= new(tmp);
+            string[] tmp = await System.IO.File.ReadAllLinesAsync(FilePath, encoding, token);
+            For_String.Headers returns = new(tmp);
             Callback?.Invoke();
             return returns;
         }

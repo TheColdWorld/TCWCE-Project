@@ -9,8 +9,8 @@
     <PackageId>TheColdWorldConfigEditer</PackageId>
 	  <LangVersion>11</LangVersion>
     <Title>TCWCE</Title>
-    <Version>2.1.0</Version>
-    <Authors>DreamSunny</Authors>
+    <Version>2.1.1</Version>
+    <Authors>TheColdWorld</Authors>
     <Company>None</Company>
     <Product>None</Product>
     <Description>A solution that stores settings in a file</Description>
@@ -18,10 +18,12 @@
     <RepositoryUrl>https://github.com/TheColdWorld/TCWCE-Project</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageOutputPath>..\..\..\output\Nuget</PackageOutputPath>
-    <AssemblyVersion>2.1.0.3</AssemblyVersion>
+    <AssemblyVersion>2.1.1.1</AssemblyVersion>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
-    <FileVersion>2.1.0.3</FileVersion>
+    <FileVersion>2.1.1.1</FileVersion>
     <PackageLicenseExpression>LGPL-2.1-only</PackageLicenseExpression>
+    <AnalysisLevel>6.0</AnalysisLevel>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0|AnyCPU'">
@@ -39,5 +41,12 @@
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net7.0|AnyCPU'">
     <DebugType>embedded</DebugType>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="README.md">
+      <Pack>true</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
 
 </Project>
