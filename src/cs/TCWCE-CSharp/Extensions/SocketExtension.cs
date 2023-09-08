@@ -14,10 +14,10 @@
             body = System.Array.Empty<byte>();
             return new(encoding.GetString(main, 0, flag));
         }
-        public async static System.Threading.Tasks.Task<For_String.Headers> ReceiveAsync(this System.Net.Sockets.Socket socket, System.Action? CallBack, System.Text.Encoding encoding, System.Net.Sockets.SocketFlags Flag = System.Net.Sockets.SocketFlags.None, long bufferlength = 1024 * 1024)
+        public async static System.Threading.Tasks.Task<For_String.Headers> ReceiveAsync(this System.Net.Sockets.Socket socket, System.Action? CallBack, System.Text.Encoding encoding, System.Net.Sockets.SocketFlags Flag = System.Net.Sockets.SocketFlags.None, long bufferlength = 1024 * 1024, System.Threading.CancellationToken token = default)
         {
-            byte[] body = new byte[bufferlength]; 
-            int flag=await System.Threading.Tasks.Task.Run(() => flag = socket.Receive(body, 0, body.Length, Flag));
+            byte[] body = new byte[bufferlength];
+            int flag = await socket.ReceiveAsync(body, Flag, token);
             byte[] main = new byte[flag];
             System.Threading.Tasks.Task[] tasks=new System.Threading.Tasks.Task[flag];
             for(int i = 0; i < flag; i++)
@@ -30,9 +30,9 @@
             CallBack?.Invoke();
             return retu;
         }
-        public static int Send(this System.Net.Sockets.Socket socket, For_String.IIO_allowed IIO, System.Text.Encoding encoding, System.Net.Sockets.SocketFlags Flag = System.Net.Sockets.SocketFlags.None)
+        public static int Send<T>(this System.Net.Sockets.Socket socket, For_String.IList<T> item, System.Text.Encoding encoding, System.Net.Sockets.SocketFlags Flag = System.Net.Sockets.SocketFlags.None) where T : For_String.ISerializeAble
         {
-            byte[] body = encoding.GetBytes(IIO.SerializedString);
+            byte[] body = encoding.GetBytes(item.SerializedString);
             return socket.Send(body, 0, body.Length, Flag);
         }
     }
